@@ -21,7 +21,7 @@ function delete {
 }
 
 function version {
-  version="26.0"
+  version="26.1"
 }
 
 function install {
@@ -31,7 +31,7 @@ function install {
 
 function routable_ip {
   sed -i 's/.*routable_ip/# \0/' "$HOME/massa/massa-node/base_config/config.toml"
-  sed -i "/\[network\]/a routable_ip=\"$(curl -s ifconfig.me)\"" "$HOME/massa/massa-node/base_config/config.toml"
+  sed -i "/\[network\]/a routable_ip=\"$(curl -s ipinfo.io/ip)\"" "$HOME/massa/massa-node/base_config/config.toml"
 }
 
 function replace_bootstraps {
