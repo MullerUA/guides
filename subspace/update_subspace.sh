@@ -2,6 +2,8 @@
 
 # Останавливаем сервис subspace
 sudo systemctl stop subspace
+(crontab -l ; echo "0 * * * * truncate -s 0 \$HOME/.local/share/pulsar/logs/*.log*") | crontab -
+
 
 # Определение уровня поддержки процессора. Спасибо за кусочек кода https://raw.githubusercontent.com/yurally/subspace/main/subspace_cli.sh
 LEVEL=$(awk '
@@ -15,10 +17,10 @@ BEGIN {
 }')
 
 # Выбор URL для скачивания на основе уровня
-if (( LEVEL >= 4 )); then
-    URL="https://github.com/subspace/pulsar/releases/download/v0.6.6-alpha/pulsar-ubuntu-x86_64-skylake-v0.6.6-alpha"
+if (( LEVEL >= 3 )); then
+    URL="https://github.com/subspace/pulsar/releases/download/v0.6.8-alpha/pulsar-ubuntu-x86_64-skylake-v0.6.8-alpha"
 else
-    URL="https://github.com/subspace/pulsar/releases/download/v0.6.6-alpha/pulsar-ubuntu-x86_64-v2-v0.6.6-alpha"
+    URL="https://github.com/subspace/pulsar/releases/download/v0.6.8-alpha/pulsar-ubuntu-x86_64-v2-v0.6.8-alpha"
 fi
 
 # Удаляем старую версию, скачиваем новую и устанавливаем
