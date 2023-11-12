@@ -16,7 +16,7 @@ function colors {
 
 function install_tools {
   curl -s https://raw.githubusercontent.com/DOUBLE-TOP/tools/main/ufw.sh | bash &>/dev/null
-  # curl -s https://raw.githubusercontent.com/DOUBLE-TOP/tools/main/rust.sh | bash &>/dev/null
+  curl -s https://raw.githubusercontent.com/DOUBLE-TOP/tools/main/main.sh | bash &>/dev/null
   # source ~/.cargo/env
   # rustup default nightly
   sleep 1
@@ -58,7 +58,7 @@ function generate_wallet {
 }
 
 colors
-export version="v0.61.0"
+export version="v0.63.1"
 install_tools
 # source_git
 # build_penumbra
