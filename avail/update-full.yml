@@ -1,0 +1,40 @@
+#!/bin/bash
+
+function colors {
+  GREEN="\e[32m"
+  RED="\e[39m"
+  YELLOW="\e[33m"
+  NORMAL="\e[0m"
+}
+
+function logo {
+  curl -s https://raw.githubusercontent.com/DOUBLE-TOP/tools/main/doubletop.sh | bash
+}
+
+function line {
+  echo -e "${GREEN}-----------------------------------------------------------------------------${NORMAL}"
+}
+
+function output {
+  echo -e "${YELLOW}$1${NORMAL}"
+}
+
+function update {
+  sudo systemctl stop avail-full
+  wget https://doubletop-bin.ams3.digitaloceanspaces.com/avail/v1.9.0.3/data-avail
+  sudo mv data-avail /usr/bin/avail-full
+  sudo chmod +x /usr/bin/avail-full
+  sudo systemctl restart avail-full
+}
+
+function main {
+  colors
+  line
+  logo
+  line
+  update
+  line
+  output "Обновление завершено"
+}
+
+main
