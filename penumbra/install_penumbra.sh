@@ -58,7 +58,7 @@ function generate_wallet {
 }
 
 colors
-export version="v0.64.2"
+export version="v0.65.0"
 install_tools
 # source_git
 # build_penumbra
