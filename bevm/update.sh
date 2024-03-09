@@ -27,14 +27,18 @@ function output_normal {
   echo -e "${GREEN}$1${NORMAL}"
 }
 
-function read_bevm_name() {
-    read -p "Enter your EVM wallet address (MM): " BEVM_NAME
-    if [ -z "$BEVM_NAME" ]; then
-        echo "Wallet address is not entered, please try again!"
-        exit 1
+function stop_service() {
+    if [[ $(systemctl is-active $1) == "active" ]]; then
+        sudo systemctl stop $1
+        sudo systemctl disable $1
+        rm -rf $HOME/.local/share/bevm/chains/bevm/db/full/
     fi
-    echo "Your nickname in telemetry: $BEVM_NAME"
-    sleep 1
+}
+
+function migrate_data() {
+    nodename=$(cat /etc/systemd/system/bevmd.service | grep -oP -- '--name="\K[^"]*')
+    mkdir -p $HOME/.bevm/{data/chains/bevm/network,log,keystore}
+    cp $HOME/.local/share/bevm/chains/bevm/network/secret_ed25519 $HOME/.bevm/data/chains/bevm/network/secret_ed25519
 }
 
 function install_docker() {
@@ -55,7 +59,6 @@ function install_docker() {
 
 function prepate_config() {
     echo "Preparing config file..."
-    mkdir -p $HOME/.bevm/{data/chains/bevm/network,log,keystore}
     cat > $HOME/.bevm/config.json <<EOF
 {
   "chain": "testnet",
@@ -71,7 +74,7 @@ function prepate_config() {
   "rpc-port": 8087,
   "pruning": "archive",
   "db-cache": 2048,
-  "name": "$BEVM_NAME",
+  "name": "$nodename",
   "base-path": "/data",
   "telemetry-url": "wss://telemetry-testnet.bevm.io/submit 1",
   "bootnodes": []
@@ -99,16 +102,18 @@ function main {
     colors
     line
     logo
+    # line
+    # output "Checking old BEVM installation..."
+    # stop_service bevmd
+    # migrate_data
+    # line
+    # output "Checking Docker installation..."
+    # install_docker
+    # line
+    # output "Preparing BEVM config..."
+    # prepate_config
     line
-    read_bevm_name
-    line
-    output "Checking Docker installation..."
-    install_docker
-    line
-    output "Preparing BEVM config..."
-    prepate_config
-    line
-    output "Starting BEVM..."
+    output "Updating BEVM..."
     pull_and_start_docker
     line
     output "BEVM updated successfully"
