@@ -49,7 +49,11 @@ function source_git {
 
 function wget_bin_pcli {
   mkdir -p $HOME/penumbra/target/release/
-  wget -O  $HOME/penumbra/target/release/pcli https://doubletop-bin.ams3.digitaloceanspaces.com/penumbra/$version/pcli
+  if [[ $(lsb_release -rs) == "20.04" ]]; then
+    wget -O  $HOME/penumbra/target/release/pcli https://doubletop-bin.ams3.digitaloceanspaces.com/penumbra/$version/pcli
+  else
+    wget -O  $HOME/penumbra/target/release/pcli https://doubletop-bin.ams3.digitaloceanspaces.com/penumbra/$version/pcli22
+  fi
   sudo chmod +x $HOME/penumbra/target/release/pcli
   sudo cp $HOME/penumbra/target/release/pcli /usr/bin/pcli
 }
@@ -79,7 +83,7 @@ function view {
 
 
 colors
-export version="v0.70.0"
+export version="v0.77.2"
 # source_git
 # rust_update
 

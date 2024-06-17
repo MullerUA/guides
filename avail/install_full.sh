@@ -32,15 +32,15 @@ function install_main_tools {
 function wget_bin {
     echo -e "${YELLOW}Скачивание бинарников:${NORMAL}"
     if [[ $(lsb_release -rs) == "22.04" ]]; then
-        wget https://github.com/availproject/avail/releases/download/v1.10.0.0/x86_64-ubuntu-2204-data-avail.tar.gz
-        tar xvf x86_64-ubuntu-2204-data-avail.tar.gz
-        rm -f x86_64-ubuntu-2204-data-avail.tar.gz
+        wget https://github.com/availproject/avail/releases/download/v2.1.0.0-rc1/x86_64-ubuntu-2204-avail-node.tar.gz
+        tar xvf x86_64-ubuntu-2204-avail-node.tar.gz
+        rm -f x86_64-ubuntu-2204-avail-node.tar.gz
     else
-        wget https://github.com/availproject/avail/releases/download/v1.10.0.0/x86_64-ubuntu-2004-data-avail.tar.gz
-        tar xvf x86_64-ubuntu-2004-data-avail.tar.gz
-        rm -f x86_64-ubuntu-2004-data-avail.tar.gz
+        wget https://github.com/availproject/avail/releases/download/v2.1.0.0-rc1/x86_64-ubuntu-2004-avail-node.tar.gz
+        tar xvf x86_64-ubuntu-2004-avail-node.tar.gz
+        rm -f x86_64-ubuntu-2004-avail-node.tar.gz
     fi
-    sudo mv data-avail /usr/bin/avail-full
+    sudo mv avail-node /usr/bin/avail-full
     sudo chmod +x /usr/bin/avail-full
 }
 
@@ -65,22 +65,13 @@ RestartSec=3
 LimitNOFILE=65535
 ExecStart=/usr/bin/avail-full \
 --base-path $HOME/.avail-full/data/ \
---chain goldberg \
+--chain turing \
 --port 40333 \
 --rpc-port 49933 \
 --prometheus-port 49615 \
 --validator \
 --name '$AVAIL_NODENAME' \
---telemetry-url 'wss://telemetry.doubletop.io/submit 0' \
---telemetry-url 'ws://telemetry.avail.tools:8001/submit/ 0' \
---reserved-nodes \
-"/dns/bootnode-001.goldberg.avail.tools/tcp/30333/p2p/12D3KooWCVqFvrP3UJ1S338Gb8SHvEQ1xpENLb45Dbynk4hu1XGN" \
-"/dns/bootnode-002.goldberg.avail.tools/tcp/30333/p2p/12D3KooWD6sWeWCG5Z1qhejhkPk9Rob5h75wYmPB6MUoPo7br58m" \
-"/dns/bootnode-003.goldberg.avail.tools/tcp/30333/p2p/12D3KooWMR9ZoAVWJv6ahraVzUCfacNbFKk7ABoWxVL3fJ3XXGDw" \
-"/dns/bootnode-004.goldberg.avail.tools/tcp/30333/p2p/12D3KooWMuyLE3aPQ82HTWuPUCjiP764ebQrZvGUzxrYGuXWZJZV" \
-"/dns/bootnode-005.goldberg.avail.tools/tcp/30333/p2p/12D3KooWKJwbdcZ7QWcPLHy3EJ1UiffaLGnNBMffeK8AqRVWBZA1" \
-"/dns/bootnode-006.goldberg.avail.tools/tcp/30333/p2p/12D3KooWM8AaHDH8SJvg6bq4CGQyHvW2LH7DCHbdv633dsrti7i5" \
---reserved-only 
+--telemetry-url 'wss://telemetry.doubletop.io/submit 0'
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -92,7 +83,7 @@ sudo systemctl restart avail-full
 
 function output {
     echo -e "${YELLOW}Нода установлена, идем проверять себя в телеметрии:${NORMAL}"
-    echo -e "https://telemetry.doubletop.io/#list/0x6f09966420b2608d1947ccfb0f2a362450d1fc7fd902c29b67c906eaa965a7ae"
+    echo -e "https://telemetry.doubletop.io/#list/0xd3d2f3a3495dc597434a99d7d449ebad6616db45e4e4f178f31cc6fa14378b70"
     echo -e "${YELLOW}Для проверки логов выполняем команду:${NORMAL}"
     echo -e "journalctl -n 100 -f -u avail-full -o cat"
     echo -e "${YELLOW}Для проверки логов выполняем команду:${NORMAL}"
